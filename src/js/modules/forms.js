@@ -1,4 +1,5 @@
 import checkNumInputs from "./checkNumInputs";
+// import closeModalDone from "./closemodalTest";
 
 const forms = (state) => { 
     const form = document.querySelectorAll('form'),
@@ -26,6 +27,13 @@ const forms = (state) => {
         inputs.forEach(item => { 
             item.value = '';
         });
+    };
+
+    function closeModalDone(selector, time) { 
+        setTimeout(()=> { 
+            document.querySelector(selector).style.display = 'none';
+            document.body.style.overflow = '';
+        }, time);
     }
 
     form.forEach(item => { 
@@ -41,9 +49,9 @@ const forms = (state) => {
             // сбор данных
 
             const formData = new FormData(item);
-            if(item.getAttribute('data-calc')=== 'end') { 
-                for(let key in state) {
-                    formData.append(key, state[key]);
+            if(item.getAttribute('data-calc') === 'end') { 
+                for(let key in state) {  // перебор данных из state'та
+                    formData.append(key, state[key]); // добавление пары ключ значение в formData
                 }
                 
             }
@@ -58,7 +66,11 @@ const forms = (state) => {
                     clearInputs();
                     setTimeout(() => { 
                         statusMessage.remove();
-                    }, 5000);
+                        closeModalDone('.popup_calc_end');
+                    }, 3000);
+                    for(const key in state) { 
+                        delete state[key];
+                    }
                 }); 
 
 
