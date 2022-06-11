@@ -1,10 +1,14 @@
 import disabledModal from "./disableModal";
+import calcScroll from "./calcScroll";
+import {modifyBody} from "./calcScroll";
+
 const modals = () =>  {
     function showModals(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
         const trigger = document.querySelectorAll(triggerSelector),
             modal = document.querySelector(modalSelector),
             close = document.querySelector(closeSelector),
-            windows = document.querySelectorAll('[data-modal]');
+            windows = document.querySelectorAll('[data-modal]'),
+            scroll = calcScroll();
 
         trigger.forEach(item => { 
             item.addEventListener('click', (e) =>  {
@@ -17,7 +21,9 @@ const modals = () =>  {
                 });
 
                 modal.style.display = "block";
-                document.body.style.overflow = "hidden";
+                modifyBody("hidden", scroll);
+                // document.body.style.overflow = "hidden";
+                // document.body.style.marginRight = `${scroll}px`;
 
             });
             disabledModal('.form-control', '.popup_calc_button', '#width', '#height', 'input');
@@ -29,7 +35,9 @@ const modals = () =>  {
                 });
 
                 modal.style.display = 'none';
-                document.body.style.overflow = '';
+                modifyBody('', 0);
+                // document.body.style.overflow = '';
+                // document.body.style.marginRight = `0px`;
                 // document.body.classList.remove('modal-open')
             });
             
@@ -41,6 +49,7 @@ const modals = () =>  {
                 });
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
+                document.body.style.marginRight = `0px`;
                 // document.body.classList.remove('modal-open');
             }
         });
